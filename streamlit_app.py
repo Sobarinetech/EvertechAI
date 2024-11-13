@@ -6,17 +6,6 @@ import tweepy  # Add other social media libraries
 # Configure Gemini API
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
-generation_config = {
-    "temperature": 2,
-    "top_p": 0.95,
-    "top_k": 40,
-    "max_output_tokens": 2500,
-    "response_mime_type": "text/plain",
-}
-model = genai.GenerativeModel(model_name="gemini-1.5-pro-002", generation_config=generation_config)
-chat_session = model.start_chat(history=[])
-
-# Social Media API Setup (OAuth tokens, keys, etc.)
 # Replace with appropriate setup and tokens for each platform
 twitter_auth = tweepy.OAuthHandler(os.environ["TWITTER_CONSUMER_KEY"], os.environ["TWITTER_CONSUMER_SECRET"])
 twitter_auth.set_access_token(os.environ["TWITTER_ACCESS_TOKEN"], os.environ["TWITTER_ACCESS_SECRET"])
