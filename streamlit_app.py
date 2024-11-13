@@ -4,7 +4,8 @@ import google.generativeai as genai
 import tweepy  # Add other social media libraries
 
 # Configure Gemini API
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+
 
 # Replace with appropriate setup and tokens for each platform
 twitter_auth = tweepy.OAuthHandler(os.environ["TWITTER_CONSUMER_KEY"], os.environ["TWITTER_CONSUMER_SECRET"])
