@@ -1,2 +1,5 @@
 streamlit
 pandas
+os
+google.generativeai as genai
+tweepy 
