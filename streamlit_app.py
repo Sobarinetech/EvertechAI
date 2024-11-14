@@ -2,17 +2,8 @@ import streamlit as st
 import google.generativeai as genai
 import tweepy  # Add other social media libraries as needed
 
-# Configure Gemini API with Streamlit secrets
-genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-
-# Set generation configuration
-generation_config = {
-    "temperature": 2,
-    "top_p": 0.95,
-    "top_k": 40,
-    "max_output_tokens": 2500,
-    "response_mime_type": "text/plain",
-}
+# Configure the API key securely from Streamlit's secrets
+genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
 # Set up Twitter API credentials
 twitter_auth = tweepy.OAuthHandler(st.secrets["TWITTER_CONSUMER_KEY"], st.secrets["TWITTER_CONSUMER_SECRET"])
@@ -22,21 +13,26 @@ twitter_api = tweepy.API(twitter_auth)
 # Streamlit UI
 st.title("Social Media Content Generator and Poster")
 
-# Input for content generation
-user_input = st.text_area("Describe your content idea:")
+# Prompt input field
+user_input = st.text_input("Enter your content idea:", "Example: Tips on productivity")
 
-# Generate content when button is clicked
+# Button to generate response
 if st.button("Generate Content"):
     try:
-        # Generate content using Gemini's text generation
-        response = genai.generate_text(model="gemini-1.5-pro-002", prompt=user_input, **generation_config)
+        # Load and configure the Gemini model
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # Generate response from the model
+        response = model.generate_content(user_input)
+        
+        # Display generated content in Streamlit
         generated_content = response.text
         st.write("Generated Content:")
         st.write(generated_content)
     except Exception as e:
         st.error(f"Failed to generate content: {e}")
 
-# Social media posting
+# Button to post the generated content to Twitter
 if st.button("Post to Twitter"):
     if 'generated_content' in locals() and generated_content:
         try:
@@ -47,5 +43,3 @@ if st.button("Post to Twitter"):
             st.error(f"Failed to post to Twitter: {e}")
     else:
         st.warning("Please generate content before posting.")
-
-# Repeat similar blocks for other social media platforms as needed
