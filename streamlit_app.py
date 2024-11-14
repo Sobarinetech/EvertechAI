@@ -1,7 +1,6 @@
 import streamlit as st
 import google.generativeai as genai
 import tweepy  # Add other social media libraries as needed
-import os
 
 # Configure Gemini API with Streamlit secrets
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
@@ -29,8 +28,8 @@ user_input = st.text_area("Describe your content idea:")
 # Generate content when button is clicked
 if st.button("Generate Content"):
     try:
-        # Generate content without chat session
-        response = genai.generate(prompt=user_input, **generation_config)
+        # Generate content using Gemini's text generation
+        response = genai.generate_text(model="gemini-1.5-pro-002", prompt=user_input, **generation_config)
         generated_content = response.text
         st.write("Generated Content:")
         st.write(generated_content)
